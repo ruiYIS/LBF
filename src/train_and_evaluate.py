@@ -439,8 +439,6 @@ def train_tree(input_batch, input_length, num_size_batch,
         num_iteration = int(len(fix_target_list)/mapo_batch_size)
 
     loss = torch.tensor([[0]])
-    if USE_CUDA:
-        loss.cuda()
 
     for j in range (num_iteration):
         if not j * mapo_batch_size + mapo_batch_size - 1 < len(fix_target_list):
@@ -575,9 +573,7 @@ def train_tree(input_batch, input_length, num_size_batch,
         loss1 = masked_cross_entropy(all_node_outputs, target, target_length_mapo)
         #loss = loss1
         loss1.backward()
-        if USE_CUDA:
-            loss1.cuda()
-        loss += loss1.long()
+        loss += loss1
         # clip the grad
         # torch.nn.utils.clip_grad_norm_(encoder.parameters(), 5)
         # torch.nn.utils.clip_grad_norm_(predict.parameters(), 5)
@@ -699,5 +695,4 @@ def evaluate_tree(input_batch, input_length, encoder, predict, generate, merge, 
             break
 
     return [beams[0].out, beams[1].out, beams[2].out, beams[3].out, beams[4].out]
-
 
