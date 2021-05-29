@@ -33,7 +33,7 @@ beam_size = 5
 n_layers = 2
 
 data = load_raw_data("data/Math_23K.json")
-
+data = data[0:5001]
 pairs = transfer_num(data)
 temp_pairs = []
 for p in pairs:
